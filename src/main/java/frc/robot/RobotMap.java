@@ -23,6 +23,7 @@ public class RobotMap{
     //Transporter
     public static final int FLICKER_MOTOR_PORT = 33;
     public static final int LOADING_MOTOR_PORT = 34;
+    public static final int SHOOTER_MICRO_SWITCH = 5;
     
     // Climber ports
     public static final int CLIMBER_LIFTER_MOTOR_PORT = 2;

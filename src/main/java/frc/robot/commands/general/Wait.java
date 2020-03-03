@@ -5,44 +5,39 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands.general;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 
-public class ShooterSetup extends CommandBase {
-  private DoubleSupplier speedTarget;
-
-  public ShooterSetup(DoubleSupplier speedTarget) {
-    addRequirements(Robot.m_shooter);
-    this.speedTarget = speedTarget;
+public class Wait extends CommandBase {
+  /**
+   * Creates a new Wait.
+   */
+  double startTime, timeSetPoint;
+  public Wait(double time) {
+    timeSetPoint = time;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
-    Robot.m_shooter.setIsSpeedPursuit(true);
+    startTime = System.currentTimeMillis();
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.m_shooter.setSpeedSetpoint(0);
-    Robot.m_shooter.setIsSpeedPursuit(false);
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
-  }
-
-  public boolean isReady(){
-    return Robot.m_shooter.isOnSpeed();
+    return System.currentTimeMillis() - startTime >= timeSetPoint;
   }
 }

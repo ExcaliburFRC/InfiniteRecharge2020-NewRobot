@@ -5,44 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
-
-import java.util.function.DoubleSupplier;
+package frc.robot.commands.leds;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.LEDs.LEDMode;
 
-public class ShooterSetup extends CommandBase {
-  private DoubleSupplier speedTarget;
-
-  public ShooterSetup(DoubleSupplier speedTarget) {
-    addRequirements(Robot.m_shooter);
-    this.speedTarget = speedTarget;
+public class DefaultLED extends CommandBase {
+  public DefaultLED() {
+    addRequirements(Robot.m_leds);
   }
 
   @Override
   public void initialize() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
-    Robot.m_shooter.setIsSpeedPursuit(true);
   }
 
   @Override
   public void execute() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
+    Robot.m_leds.setMode(LEDMode.BLUE);
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.m_shooter.setSpeedSetpoint(0);
-    Robot.m_shooter.setIsSpeedPursuit(false);
   }
 
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public boolean isReady(){
-    return Robot.m_shooter.isOnSpeed();
   }
 }

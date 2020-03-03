@@ -10,6 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.commands.collector.CollectorDrive;
+import frc.robot.commands.leds.DefaultLED;
 import frc.robot.subsystems.*;
 
 public class Robot extends TimedRobot {
@@ -20,6 +22,7 @@ public class Robot extends TimedRobot {
   public static Limelight m_limelight;
   public static Shooter m_shooter;
   public static Transporter m_transporter;
+  public static LEDs m_leds;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -32,6 +35,7 @@ public class Robot extends TimedRobot {
     m_limelight = new Limelight();
     m_shooter = new Shooter();
     m_transporter = new Transporter();
+    m_leds = new LEDs();
 
     OI.init();
     initDefaultCommands();
@@ -54,7 +58,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    m_chassi.tankDrive(0, 0);
   }
 
   @Override
@@ -66,5 +70,11 @@ public class Robot extends TimedRobot {
     m_chassi.setDefaultCommand(new RunCommand(()->{
      m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(OI.xSpeedAxis), OI.driverJoystick.getRawAxis(OI.zRotationAxis));
     }, m_chassi));
+
+    m_leds.setDefaultCommand(new DefaultLED());
+
+    // m_transporter.setDefaultCommand(new TransporterDrive());
+
+    m_collector.setDefaultCommand(new CollectorDrive());
   }
 }
