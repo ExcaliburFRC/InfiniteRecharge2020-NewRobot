@@ -54,10 +54,9 @@ public class RobotConstants{
     public static class ShooterConstants{
         public static final double SPEED_TOLERANCE = 500.0; //used to be 250
 
-        public static final double RIGHT_TOP_SPEED = 27500.0; 
-        public static final double LEFT_TOP_SPEED = 27000.0;
+        public static final double TOP_SPEED = 27500.0; 
         public static final double VOLTAGE_AT_TOP_SPEED = 11.4; 
-        public static final double MOTOR_KV = VOLTAGE_AT_TOP_SPEED/RIGHT_TOP_SPEED;
+        public static final double MOTOR_KV = VOLTAGE_AT_TOP_SPEED/TOP_SPEED;
         public static final double SPEED_KP = 0.000135;
         public static final double SPEED_KI = 0.0000001;
         public static final double kPEffectiveness = 0.175;
@@ -68,7 +67,7 @@ public class RobotConstants{
     }
 
     public static class TransporterConstants{
-        
+        public static final double NO_RETURN_TIME = 500;
     }
 
     public static class MotionProfilingConstants{

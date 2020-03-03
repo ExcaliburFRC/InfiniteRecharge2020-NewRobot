@@ -7,7 +7,6 @@
 
 package frc.robot.commands.debug;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -29,12 +28,16 @@ public class DebugShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shootSpeed = OI.driverJoystick.getRawAxis(3);
-    Robot.m_shooter.setShooterMotorPower(shootSpeed);
-    SmartDashboard.putNumber("shoot_speed_debug", shootSpeed);
+    double shootSpeed = OI.armJoystick.getRawAxis(1);
     
-    SmartDashboard.putNumber("left_shooter_speed_debug", Robot.m_shooter.getLeftMotorSpeed());
-    SmartDashboard.putNumber("right_shooter_speed_debug", Robot.m_shooter.getRightMotorSpeed());
+    if (OI.armJoystick.getRawButton(12)){
+      Robot.m_shooter.setSpeedSetpoint(14000);
+      Robot.m_shooter.setIsSpeedPursuit(true);
+    } else {
+      Robot.m_shooter.setSpeedSetpoint(0);
+      Robot.m_shooter.setIsSpeedPursuit(false);
+      Robot.m_shooter.setShooterMotorPower(shootSpeed);
+    }
   }
 
   // Called once the command ends or is interrupted.

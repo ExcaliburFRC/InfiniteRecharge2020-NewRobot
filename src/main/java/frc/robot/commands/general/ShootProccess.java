@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import frc.robot.commands.chassi.PursuitTX;
 import frc.robot.subsystems.Limelight;
 import com.revrobotics.CANSparkMax.IdleMode;
-import frc.robot.subsystems.LEDs.LEDMode;
+// import frc.robot.subsystems.LEDs.LEDMode;
 
 public class ShootProccess extends CommandBase {
   /**
@@ -37,7 +37,6 @@ public class ShootProccess extends CommandBase {
   }
 
   public ShootProccess(boolean isAuto, double balls) {
-    addRequirements(Robot.m_leds);
     this.isAuto = isAuto;
 
     isCountingBalls = balls != -1;
@@ -73,12 +72,6 @@ public class ShootProccess extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (isReady()){
-      Robot.m_leds.setMode(LEDMode.GREEN);
-    } else {
-      Robot.m_leds.setMode(LEDMode.RED);
-    }
-
     if (isCountingBalls){
       if (lastShooterSwitchStatus && !Robot.m_transporter.isBallInShooter()){
         ballsShot++;

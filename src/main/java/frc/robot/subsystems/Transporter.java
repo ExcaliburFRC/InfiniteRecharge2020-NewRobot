@@ -39,7 +39,7 @@ public class Transporter extends SubsystemBase {
     }
 
     public boolean getRawShooterSensor(){
-        return shooterSwitch.get();
+        return !shooterSwitch.get();
     }
 
     public boolean isBallInShooter(){

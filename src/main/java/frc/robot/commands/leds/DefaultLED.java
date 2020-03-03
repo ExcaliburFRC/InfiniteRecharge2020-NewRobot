@@ -12,17 +12,25 @@ import frc.robot.Robot;
 import frc.robot.subsystems.LEDs.LEDMode;
 
 public class DefaultLED extends CommandBase {
+  LEDMode color;
+
   public DefaultLED() {
     addRequirements(Robot.m_leds);
   }
 
   @Override
   public void initialize() {
+    color = LEDMode.BLUE;
   }
 
   @Override
   public void execute() {
-    Robot.m_leds.setMode(LEDMode.BLUE);
+    if (Robot.m_shooter.isSpeedPursuit()){
+      color = Robot.m_shooter.isOnSpeed() ? LEDMode.GREEN : LEDMode.RED;
+    } else {
+      color = LEDMode.BLUE;
+    }
+    Robot.m_leds.setMode(color);
   }
 
   @Override

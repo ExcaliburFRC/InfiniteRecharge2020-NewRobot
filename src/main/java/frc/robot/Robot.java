@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.collector.CollectorDrive;
+import frc.robot.commands.debug.DebugShooter;
 import frc.robot.commands.leds.DefaultLED;
+import frc.robot.commands.transporter.TransporterDrive;
 import frc.robot.subsystems.*;
 
 public class Robot extends TimedRobot {
@@ -33,7 +35,7 @@ public class Robot extends TimedRobot {
     m_climber = new Climber();
     m_collector = new Collector();
     m_limelight = new Limelight();
-    m_shooter = new Shooter();
+    m_shooter = new Shooter(true);
     m_transporter = new Transporter();
     m_leds = new LEDs();
 
@@ -73,8 +75,10 @@ public class Robot extends TimedRobot {
 
     m_leds.setDefaultCommand(new DefaultLED());
 
-    // m_transporter.setDefaultCommand(new TransporterDrive());
-
     m_collector.setDefaultCommand(new CollectorDrive());
+
+    m_transporter.setDefaultCommand(new TransporterDrive());
+
+    m_shooter.setDefaultCommand(new DebugShooter());
   }
 }

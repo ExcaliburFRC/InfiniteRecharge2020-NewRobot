@@ -93,8 +93,7 @@ public class Shooter extends SubsystemBase {
 
       var power = AFF + P + I;
 
-      setLeftMotorSpeed(power);
-      setRightMotorSpeed(-power);
+      setShooterMotorPower(power);
 
       errorSum += RobotUtils.clip(error,2000);
 
@@ -104,7 +103,6 @@ public class Shooter extends SubsystemBase {
 
       errorSum = 0;
     }
-    
     
     speedReadyAverager.update(getRawIsOnSpeed());
 
@@ -116,11 +114,6 @@ public class Shooter extends SubsystemBase {
            // SmartDashboard.putNumber("DEBUG_ROBOT_VOLTAGE", RobotController.getBatteryVoltage());
     }
   }
-
-  // private double getFeedForward(){
-  //   return Math.cos(Math.toRadians(angleEncoder.getDistance())) * ShooterConstants.ABSOLUTE_FEEDFORWARD;
-  // }
-
  
   public void setLeftMotorSpeed(double s){
     leftShooterMotor.set(ControlMode.PercentOutput, s);
@@ -132,5 +125,9 @@ public class Shooter extends SubsystemBase {
 
   private double compensateVoltage(double originalVoltage){
     return originalVoltage * (ShooterConstants.VOLTAGE_AT_TOP_SPEED/RobotController.getBatteryVoltage());
+  }
+
+  public boolean isSpeedPursuit(){
+    return isSpeedPursuit;
   }
 }
