@@ -7,30 +7,28 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.wpilibj.*;
-
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PWMSparkMax;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.RobotMap;
 import frc.robot.RobotConstants;
 import frc.robot.RobotConstants.DriveConstants;
+import frc.robot.RobotMap;
 
 
 public class Chassi extends SubsystemBase {
   //4 spark max + neo
-  private CANSparkMax LBM,LFM,RBM,RFM;
+  private PWMSparkMax LBM,LFM,RBM,RFM;
   private SpeedControllerGroup leftMotor, rightMotor;
   private DifferentialDrive differentialDrive;
   //2 encoders (PWM)
@@ -46,10 +44,10 @@ public class Chassi extends SubsystemBase {
   public Chassi() {
     gyro = new AHRS(SPI.Port.kMXP);
 
-    LBM = new CANSparkMax(RobotMap.LEFT_BACK_MOTOR_PORT, MotorType.kBrushless);
-    LFM = new CANSparkMax(RobotMap.LEFT_FRONT_MOTOR_PORT, MotorType.kBrushless);
-    RBM = new CANSparkMax(RobotMap.RIGHT_BACK_MOTOR_PORT, MotorType.kBrushless);
-    RFM = new CANSparkMax(RobotMap.RIGHT_FRONT_MOTOR_PORT, MotorType.kBrushless);
+    LBM = new PWMSparkMax(RobotMap.LEFT_BACK_MOTOR_PORT);
+    LFM = new PWMSparkMax(RobotMap.LEFT_FRONT_MOTOR_PORT);
+    RBM = new PWMSparkMax(RobotMap.RIGHT_BACK_MOTOR_PORT);
+    RFM = new PWMSparkMax(RobotMap.RIGHT_FRONT_MOTOR_PORT);
 
     leftMotor = new SpeedControllerGroup(LBM, LFM);
     rightMotor = new SpeedControllerGroup(RBM, RFM);
@@ -143,14 +141,15 @@ public class Chassi extends SubsystemBase {
   }
 
   public void setIdleMode(IdleMode mode){
-    LBM.setIdleMode(mode);
-    LFM.setIdleMode(mode);
-    RBM.setIdleMode(mode);
-    RFM.setIdleMode(mode);
+    // LBM.setIdleMode(mode);
+    // LFM.setIdleMode(mode);
+    // RBM.setIdleMode(mode);
+    // RFM.setIdleMode(mode);
   }
 
   public IdleMode getIdleMode(){
-    return LBM.getIdleMode();
+    // return LBM.getIdleMode();
+    return IdleMode.kCoast;
   }
 
   @Override
