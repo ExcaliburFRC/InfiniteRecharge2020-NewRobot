@@ -16,7 +16,9 @@ public class Transporter extends SubsystemBase {
 
     public Transporter(){
         loading = new VictorSPX(RobotMap.LOADING_MOTOR_PORT);
+        loading.setInverted(true);
         flicker = new VictorSPX(RobotMap.FLICKER_MOTOR_PORT);
+        flicker.setInverted(false);
         shooterSwitch = new DigitalInput(RobotMap.SHOOTER_MICRO_SWITCH);
         isAutoShoot = false;
         shooterSensorAverager = new BooleanAverager(10);

@@ -37,8 +37,8 @@ public class TransporterDrive extends CommandBase {
     // var isInNoReturnMode = (System.currentTimeMillis() - timeSinceTop) < TransporterConstants.NO_RETURN_TIME;
 
     if (OI.armJoystick.getRawButton(OI.collectorTakeInBallButton) && !Robot.m_transporter.getRawShooterSensor()){ //get the raw shooter sensor to get quicker feedback
-      Robot.m_transporter.setFlickerMotorSpeed(0.4);
-      Robot.m_transporter.setLoadingMotorSpeed(0.3);
+      Robot.m_transporter.setFlickerMotorSpeed(0.3);
+      Robot.m_transporter.setLoadingMotorSpeed(0.5);
     } else if (isOkToShoot){
       Robot.m_transporter.setFlickerMotorSpeed(0.6);
       Robot.m_transporter.setLoadingMotorSpeed(0.6);
