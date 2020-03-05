@@ -68,6 +68,9 @@ public class RobotConstants{
 
     public static class TransporterConstants{
         public static final double NO_RETURN_TIME = 500;
+        public static final double AUTO_SHOOT_LOAD_SPEED = 0.6;
+        public static final double AUTO_SHOOT_FLICKER_SPEED = 0.6;
+
     }
 
     public static class MotionProfilingConstants{

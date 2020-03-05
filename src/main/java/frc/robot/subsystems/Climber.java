@@ -7,35 +7,36 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.*;
 
 public class Climber extends SubsystemBase {
-  private Encoder heightEncoder;
-  private Spark climberLifterMotor;
-  private Spark robotLifterMotor;
+  private DoubleSolenoid hanger;
+  private Spark robotLifterMotor1, robotLifterMotor2;
+  private boolean isOn;
 
   public Climber() {
-    climberLifterMotor = new Spark(RobotMap.CLIMBER_LIFTER_MOTOR_PORT);
-    robotLifterMotor = new Spark(RobotMap.ROBOT_LIFTER_MOTOR_PORT1);
-
-    heightEncoder = new Encoder(RobotMap.HEIGHT_ENCODER_PORT1,RobotMap.HEIGHT_ENCODER_PORT2);
+    isOn = false;
+    hanger = new DoubleSolenoid(RobotMap.HANGER_PORT1, RobotMap.HANGER_PORT2);
+    robotLifterMotor1 = new Spark(RobotMap.ROBOT_LIFTER_MOTOR_PORT1);
+    robotLifterMotor2 = new Spark(RobotMap.ROBOT_LIFTER_MOTOR_PORT2);
   }
 
-  public void setAbsHeightMotorSpeed(double speed){
-    climberLifterMotor.set(speed);
+  public void setHangerState(boolean open){
+    hanger.set(open? kForward : kReverse);
   }
 
-  public int getHeightEncoderValue(){
-    return heightEncoder.get();
-  }
-  public void resetHeightEncoder(){
-    heightEncoder.reset();
-  }
   public void setRobotClimbersPower(double power){
-    robotLifterMotor.set(power);
+    robotLifterMotor1.set(power);
+    robotLifterMotor2.set(power);
   }
-
+  public void setIsOn(boolean isOn){
+    this.isOn = isOn;
+  }
+  public boolean getIsOn(){
+    return isOn;
+  }
 }

@@ -20,13 +20,18 @@ public class ClimberDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.m_climber.setIsOn(true);
     // Robot.m_leds.setMode(LEDMode.YELLOW);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.m_climber.setAbsHeightMotorSpeed(OI.armJoystick.getRawAxis(1)); //Elevator height
+    if(OI.driverJoystick.getRawButton(3)){
+      Robot.m_climber.setHangerState(true);
+    }else if(OI.driverJoystick.getRawButton(2)){
+      Robot.m_climber.setHangerState(false);
+    }
 
     if (OI.driverJoystick.getRawButton(6)){ //forward
       Robot.m_climber.setRobotClimbersPower(0.9);
@@ -40,6 +45,7 @@ public class ClimberDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.m_climber.setIsOn(false);
   }
 
   // Returns true when the command should end.

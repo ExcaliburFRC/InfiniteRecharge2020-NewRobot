@@ -26,9 +26,9 @@ public class RobotMap{
     public static final int SHOOTER_MICRO_SWITCH = 5;
     
     // Climber ports
-    public static final int CLIMBER_LIFTER_MOTOR_PORT = 2;
     public static final int ROBOT_LIFTER_MOTOR_PORT1 = 1;
-    public static final int HEIGHT_ENCODER_PORT1 = 21;
-    public static final int HEIGHT_ENCODER_PORT2 = 22;   
+    public static final int ROBOT_LIFTER_MOTOR_PORT2 = 2;
+    public static final int HANGER_PORT1 = 1;
+    public static final int HANGER_PORT2 = 0;   
 
 }

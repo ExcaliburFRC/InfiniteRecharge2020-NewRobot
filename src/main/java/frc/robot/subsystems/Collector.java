@@ -7,23 +7,25 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 
 public class Collector extends SubsystemBase {
-  Spark rollerMotor;
+  VictorSPX rollerMotor;
   DoubleSolenoid lifterPiston;
 
   public Collector() {
-    rollerMotor = new Spark(RobotMap.ROLLER_MOTOR_PORT);
+    rollerMotor = new VictorSPX(RobotMap.ROLLER_MOTOR_PORT);
     lifterPiston = new DoubleSolenoid(RobotMap.LIFTER_PORTS[0], RobotMap.LIFTER_PORTS[1]);
   }
 
   public void setRollerMotorPower(double p){
-    rollerMotor.set(p);
+    rollerMotor.set(ControlMode.PercentOutput, p);
   }
 
   public void setLifterPistonPosition(boolean on){
