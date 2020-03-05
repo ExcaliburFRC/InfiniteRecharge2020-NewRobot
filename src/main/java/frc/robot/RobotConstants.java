@@ -23,8 +23,6 @@ public class RobotConstants{
         
         public static final double DISTANCE_KP = 0.3;
         public static final double DISTANCE_TOLERANCE = 0.5;
-    
-
     }
 
     public static class ClimbConstants{
@@ -66,11 +64,16 @@ public class RobotConstants{
         public static final double LOWER_SPEED = 10000;
     }
 
+    public static class CollectorConstants{
+        public static final double ROLLER_SPEED = 0.7;
+    }
     public static class TransporterConstants{
         public static final double NO_RETURN_TIME = 500;
         public static final double AUTO_SHOOT_LOAD_SPEED = 0.6;
         public static final double AUTO_SHOOT_FLICKER_SPEED = 0.6;
 
+        public static final double MANUAL_SHOOT_LOAD_SPEED = 0.6;
+        public static final double MANUAL_SHOOT_FLICKER_SPEED = 0.6;
     }
 
     public static class MotionProfilingConstants{

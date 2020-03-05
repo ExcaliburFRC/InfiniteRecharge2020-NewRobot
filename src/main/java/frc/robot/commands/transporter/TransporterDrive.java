@@ -10,7 +10,7 @@ package frc.robot.commands.transporter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
-// import frc.robot.RobotConstants.TransporterConstants;
+import frc.robot.RobotConstants.TransporterConstants;
 
 public class TransporterDrive extends CommandBase {
   /**
@@ -33,15 +33,15 @@ public class TransporterDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var isOkToShoot = (Robot.m_transporter.getIsAutoShoot() || OI.armJoystick.getRawButton(1)) && Robot.m_shooter.isOnSpeed();
+    var isOkToShoot = (Robot.m_transporter.getIsAutoShoot() || OI.armJoystick.getRawButton(1));// && Robot.m_shooter.isOnSpeed();
     // var isInNoReturnMode = (System.currentTimeMillis() - timeSinceTop) < TransporterConstants.NO_RETURN_TIME;
 
     if (OI.armJoystick.getRawButton(OI.collectorTakeInBallButton) && !Robot.m_transporter.getRawShooterSensor()){ //get the raw shooter sensor to get quicker feedback
-      Robot.m_transporter.setFlickerMotorSpeed(0.3);
-      Robot.m_transporter.setLoadingMotorSpeed(0.5);
+      Robot.m_transporter.setFlickerMotorSpeed(TransporterConstants.MANUAL_SHOOT_FLICKER_SPEED);
+      Robot.m_transporter.setLoadingMotorSpeed(TransporterConstants.MANUAL_SHOOT_LOAD_SPEED);
     } else if (isOkToShoot){
-      Robot.m_transporter.setFlickerMotorSpeed(0.6);
-      Robot.m_transporter.setLoadingMotorSpeed(0.6);
+      Robot.m_transporter.setFlickerMotorSpeed(TransporterConstants.AUTO_SHOOT_FLICKER_SPEED);
+      Robot.m_transporter.setLoadingMotorSpeed(TransporterConstants.AUTO_SHOOT_LOAD_SPEED);
     } else {
       Robot.m_transporter.setFlickerMotorSpeed(0);
       Robot.m_transporter.setLoadingMotorSpeed(0);

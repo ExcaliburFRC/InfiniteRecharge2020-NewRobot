@@ -10,6 +10,7 @@ package frc.robot.commands.collector;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.RobotConstants.CollectorConstants;
 
 public class CollectorDrive extends CommandBase {
 
@@ -34,10 +35,11 @@ public class CollectorDrive extends CommandBase {
     turnMultiplier = Robot.m_collector.getLifterPistonPosition() ? 1 : 0;//-1;
 
     if (OI.armJoystick.getRawButton(OI.collectorTakeInBallButton)){
-      Robot.m_collector.setRollerMotorPower(turnMultiplier * 0.75);
+      Robot.m_collector.setRollerMotorPower(turnMultiplier * CollectorConstants.ROLLER_SPEED);
     } else {
       Robot.m_collector.setRollerMotorPower(0);
     }
+    
   }
 
   // Called once the command ends or is interrupted.

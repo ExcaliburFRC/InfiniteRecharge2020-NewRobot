@@ -22,7 +22,7 @@ public class Collector extends SubsystemBase {
   public Collector() {
     rollerMotor = new VictorSPX(RobotMap.ROLLER_MOTOR_PORT);
     rollerMotor.setInverted(false);
-    lifterPiston = new DoubleSolenoid(RobotMap.LIFTER_PORTS[0], RobotMap.LIFTER_PORTS[1]);
+    lifterPiston = new DoubleSolenoid(0,1);//RobotMap.LIFTER_PORTS[0], RobotMap.LIFTER_PORTS[1]);
   }
 
   public void setRollerMotorPower(double p){

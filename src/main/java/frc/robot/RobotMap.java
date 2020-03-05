@@ -14,7 +14,7 @@ public class RobotMap{
 
     //Collector
     public static final int ROLLER_MOTOR_PORT = 51;
-    public static final int[] LIFTER_PORTS = {2, 3};
+    public static final int[] LIFTER_PORTS = {0, 1};
 
     //Shooter
     public static final int LEFT_SHOOTER_MOTOR_PORT = 41;
@@ -26,9 +26,9 @@ public class RobotMap{
     public static final int SHOOTER_MICRO_SWITCH = 0;
     
     // Climber ports
-    public static final int ROBOT_LIFTER_MOTOR_PORT1 = 1;
-    public static final int ROBOT_LIFTER_MOTOR_PORT2 = 2;
-    public static final int HANGER_PORT1 = 1;
-    public static final int HANGER_PORT2 = 0;   
+    public static final int ROBOT_LIFTER_MOTOR_PORT1 = 5;
+    public static final int ROBOT_LIFTER_MOTOR_PORT2 = 4;
+    public static final int HANGER_PORT1 = 2;
+    public static final int HANGER_PORT2 = 3;
 
 }
