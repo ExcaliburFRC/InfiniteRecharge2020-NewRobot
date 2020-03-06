@@ -22,19 +22,17 @@ public class ShooterSetup extends CommandBase {
 
   @Override
   public void initialize() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
-    Robot.m_shooter.setIsSpeedPursuit(true);
+    // Robot.m_shooter.setVelocityPID(speedTarget.getAsDouble());
   }
 
   @Override
   public void execute() {
-    Robot.m_shooter.setSpeedSetpoint(speedTarget.getAsDouble());
+    Robot.m_shooter.setVelocityPID(speedTarget.getAsDouble());
   }
 
   @Override
   public void end(boolean interrupted) {
-    Robot.m_shooter.setSpeedSetpoint(0);
-    Robot.m_shooter.setIsSpeedPursuit(false);
+    Robot.m_shooter.releaseVelocityPID();
   }
 
   @Override
