@@ -1,0 +1,50 @@
+{
+    "armJoystick" : {
+        "buttons": {
+            "1": "transport shoot",
+            "2": "collect + transport (until microswitch)",
+            "3": "open collector",
+            "4": "close collector",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "eject balls",
+            "9": "toggle climb mode",
+            "10": "",
+            "11": "",
+            "12": ""
+        }, 
+        "axes": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    },
+    "driverJoystick" : {
+        "buttons": {
+            "1 = square": "",
+            "2 = X": "[in climb mode] close hanger",
+            "3 = O": "[in climb mode] open hanger",
+            "4 = triangle": "",
+            "5 = L1": "",
+            "6 = R1": "",
+            "7 = L2" : "compressor on",
+            "8 = R2" : "compressor off",
+            "9 = share": "",
+            "10 = options": "",
+            "11 = ": "",
+            "12": "",
+            "13": "",
+            "14": ""
+        }, 
+        "axes": {
+            "1 = LY": "arcade drive - forward",
+            "2 = RX": "arcade drive - turn",
+            "3": "",
+            "4": "",
+            "5": ""
+        }
+    }
+}

@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.revrobotics.CANError;
@@ -15,8 +16,8 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants.ShooterConstants;
@@ -32,7 +33,9 @@ public class Shooter extends SubsystemBase {
   boolean isTelemetry;
 
   public Shooter(boolean isTelemetry){
-    shooterMotor = new CANSparkMax(RobotMap.LEFT_SHOOTER_MOTOR_PORT, MotorType.kBrushless);
+    shooterMotor = new CANSparkMax(RobotMap.SHOOTER_MOTOR_PORT, MotorType.kBrushless);
+    shooterMotor.setIdleMode(IdleMode.kCoast);
+
     initPID(shooterMotor.getPIDController());
     isSpeedPursuit = false;
     speedSetpoint = 0;
@@ -41,26 +44,18 @@ public class Shooter extends SubsystemBase {
     
     this.isTelemetry = isTelemetry;
   }
+  
 
   public Shooter() {
     this(false);
   }
-  @Deprecated
-  public void setSpeedSetpoint(double setpoint){
-    this.speedSetpoint = setpoint;
-    setVelocityPID(setpoint);
-  }
-  
+    
   private void setIsSpeedPursuit(boolean isSpeedPersuit){
     this.isSpeedPursuit = isSpeedPersuit;
   }
-  /**
-   * @deprecated : set a wanted velocity via {@link #setVelocityPID(double)}.
-   * This function sets an absolute speed to the motor, and will probably interfere with the Velocity PID.
-   */
-  @Deprecated
-  public void setShooterMotorPower(double p){
-    shooterMotor.set(p);
+
+  public void setAbsoluteShooterMotorPower(double p){
+    shooterMotor.getPIDController().setReference(p, ControlType.kDutyCycle);
   }
   
   public double getShooterMotorVelocity(){
@@ -76,49 +71,57 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean isOnSpeed(double speedTolerance){
-    return Math.abs(speedSetpoint - getShooterMotorVelocity()) < speedTolerance;
+    var vel_delta = this.speedSetpoint - getShooterMotorVelocity();
+    SmartDashboard.putNumber("vel_delta", vel_delta);
+    // return Math.abs(this.speedSetpoint - getShooterMotorVelocity()) < speedTolerance;
+    return Math.abs(vel_delta) < speedTolerance;
   }
 
   @Override
   public void periodic() {
-    
     speedReadyAverager.update(getRawIsOnSpeed());
 
     if (isTelemetry){
+      SmartDashboard.putNumber("DEBUG_Set_Speed", this.speedSetpoint);
       SmartDashboard.putNumber("DEBUG_SPEED", getShooterMotorVelocity());
       SmartDashboard.putBoolean("DEBUG_isOnSpeed", getRawIsOnSpeed());
     }
   }
 
-  private double compensateVoltage(double originalVoltage){
-    return originalVoltage * (ShooterConstants.VOLTAGE_AT_TOP_SPEED/RobotController.getBatteryVoltage());
-  }
+  // private double compensateVoltage(double originalVoltage){
+  //   return originalVoltage * (ShooterConstants.VOLTAGE_AT_TOP_SPEED/RobotController.getBatteryVoltage());
+  // }
   
   public boolean isSpeedPursuit(){
     return isSpeedPursuit;
   }
 
   public void setVelocityPID(double target){
-    shooterMotor.getPIDController().setReference(target, ControlType.kVelocity);
+    shooterMotor.getPIDController().setReference(target / ShooterConstants.SPEED_TO_RPM_CONVERSION, ControlType.kVelocity);
+    this.speedSetpoint = target;
   }
 
   public void releaseVelocityPID(){
     setIsSpeedPursuit(false);
-    shooterMotor.getPIDController().setReference(0, ControlType.kDutyCycle);
+    setAbsoluteShooterMotorPower(0);
   }
 
   
   private void initPID(CANPIDController controller){
-    Stream<CANError> errorStream = Set.of( controller.setP(ShooterConstants.SPEED_KP),
+    Set<String> errorSet = Stream.of(
+      controller.setFeedbackDevice(shooterMotor.getEncoder()),
+      controller.setP(ShooterConstants.SPEED_KP),
       controller.setI(ShooterConstants.SPEED_KI),
-      controller.setD(0),
-      controller.setOutputRange(-1,1))
-      .stream()
-      .filter(err -> err != CANError.kOk);
-    long errorCount = errorStream.count();
-    if(errorCount > 0){
-      System.err.printf("SparkMax PID not initialized correctly, %d errors:\n", errorCount);
-      errorStream.map(CANError::toString).forEach(System.err::println);
-    }
+      controller.setD(ShooterConstants.SPEED_KD),
+      controller.setOutputRange(0,0.8),
+      controller.setFF(ShooterConstants.SPEED_KFF)
+      )
+    .filter(err -> err != CANError.kOk).map(CANError::toString).collect(Collectors.toSet());
+    
+    if(!errorSet.isEmpty()){
+      System.err.println("SparkMax PID not initialized correctly, errors:");
+      errorSet.forEach(System.err::println);
+    }else System.err.println("SparkMax PID initialized correctly!");
+
   }
 }

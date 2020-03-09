@@ -7,6 +7,7 @@
 
 package frc.robot.commands.debug;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -30,12 +31,14 @@ public class DebugShooter extends CommandBase {
   public void execute() {
     double shootSpeed = OI.armJoystick.getRawAxis(1);
     
-    if (OI.armJoystick.getRawButton(12)){
-      Robot.m_shooter.setVelocityPID(14000);
+    if (OI.armJoystick.getRawAxis(3) > 0){
+      Robot.m_shooter.setVelocityPID(4500);
     } else {
       Robot.m_shooter.releaseVelocityPID();
-      Robot.m_shooter.setShooterMotorPower(shootSpeed);
+      Robot.m_shooter.setAbsoluteShooterMotorPower(shootSpeed);
     }
+
+    SmartDashboard.putNumber("SHOOT_SPEED", Robot.m_shooter.getShooterMotorVelocity());
   }
 
   // Called once the command ends or is interrupted.

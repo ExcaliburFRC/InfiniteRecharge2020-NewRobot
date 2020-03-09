@@ -8,11 +8,12 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants;
 import frc.robot.RobotConstants.DriveConstants;
@@ -28,7 +30,7 @@ import frc.robot.RobotMap;
 
 public class Chassi extends SubsystemBase {
   //4 spark max + neo
-  private PWMSparkMax LBM,LFM,RBM,RFM;
+  private CANSparkMax LBM,LFM,RBM, RFM;
   private SpeedControllerGroup leftMotor, rightMotor;
   private DifferentialDrive differentialDrive;
   //2 encoders (PWM)
@@ -44,10 +46,12 @@ public class Chassi extends SubsystemBase {
   public Chassi() {
     gyro = new AHRS(SPI.Port.kMXP);
 
-    LBM = new PWMSparkMax(RobotMap.LEFT_BACK_MOTOR_PORT);
-    LFM = new PWMSparkMax(RobotMap.LEFT_FRONT_MOTOR_PORT);
-    RBM = new PWMSparkMax(RobotMap.RIGHT_BACK_MOTOR_PORT);
-    RFM = new PWMSparkMax(RobotMap.RIGHT_FRONT_MOTOR_PORT);
+    LBM = new CANSparkMax(RobotMap.LEFT_BACK_MOTOR_PORT, MotorType.kBrushless);
+    LFM = new CANSparkMax(RobotMap.LEFT_FRONT_MOTOR_PORT, MotorType.kBrushless);
+    RBM = new CANSparkMax(RobotMap.RIGHT_BACK_MOTOR_PORT, MotorType.kBrushless);
+    RFM = new CANSparkMax(RobotMap.RIGHT_FRONT_MOTOR_PORT,MotorType.kBrushless);
+    RBM.setInverted(false);
+    RFM.setInverted(false);
 
     leftMotor = new SpeedControllerGroup(LBM, LFM);
     rightMotor = new SpeedControllerGroup(RBM, RFM);
@@ -165,5 +169,21 @@ public class Chassi extends SubsystemBase {
 
   public boolean getCompressorMode(){
     return compressorMode;
+  }
+
+  public void test(int motor){
+    double setSpeed = 0.3;
+    switch(motor){
+      case 1: RBM.set(0);  RFM.set(0);   LFM.set(0);    LBM.set(setSpeed);break;
+      case 2: RBM.set(0); RFM.set(setSpeed);   LFM.set(0);    LBM.set(0);break;
+      case 3: RBM.set(0);  RFM.set(0);   LFM.set(setSpeed);  LBM.set(0);break;
+      case 4: RBM.set(setSpeed);  RFM.set(0); LFM.set(0);    LBM.set(0);break;
+      default: RBM.set(0); RFM.set(0);   LFM.set(0);    LBM.set(0);break;
+    }
+
+    SmartDashboard.putNumber("lbm",    LBM.get());
+    SmartDashboard.putNumber("lfm",    LFM.get());
+    SmartDashboard.putNumber("rbm",    RBM.get());
+    SmartDashboard.putNumber("rfm",    RFM.get());
   }
 }
