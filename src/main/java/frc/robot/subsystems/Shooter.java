@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants.ShooterConstants;
 import frc.robot.RobotMap;
 import frc.robot.util.BooleanAverager;
+import frc.robot.util.RobotUtils;
 
 public class Shooter extends SubsystemBase {
   CANSparkMax shooterMotor;
@@ -30,24 +31,27 @@ public class Shooter extends SubsystemBase {
   double speedSetpoint;
   BooleanAverager speedReadyAverager;
   double errorSum;
-  boolean isTelemetry;
+  boolean isTelemetry, isSparkMaxControl, isInSpeedPursuit;
 
-  public Shooter(boolean isTelemetry){
+  public Shooter(boolean isTelemetry, boolean isSparkMaxControl){
     shooterMotor = new CANSparkMax(RobotMap.SHOOTER_MOTOR_PORT, MotorType.kBrushless);
     shooterMotor.setIdleMode(IdleMode.kCoast);
 
-    initPID(shooterMotor.getPIDController());
+    if (isSparkMaxControl){
+      initPID(shooterMotor.getPIDController());
+    }
     isSpeedPursuit = false;
     speedSetpoint = 0;
     
     speedReadyAverager = new BooleanAverager(ShooterConstants.SPEED_BUCKET_SIZE);
     
     this.isTelemetry = isTelemetry;
+    this.isSparkMaxControl = isSparkMaxControl;
   }
   
 
   public Shooter() {
-    this(false);
+    this(false, false);
   }
     
   private void setIsSpeedPursuit(boolean isSpeedPersuit){
@@ -55,7 +59,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setAbsoluteShooterMotorPower(double p){
-    shooterMotor.getPIDController().setReference(p, ControlType.kDutyCycle);
+    if (this.isSparkMaxControl){
+      shooterMotor.getPIDController().setReference(p, ControlType.kDutyCycle);  
+    } else {
+      shooterMotor.set(p);
+    }
+    
   }
   
   public double getShooterMotorVelocity(){
@@ -72,8 +81,6 @@ public class Shooter extends SubsystemBase {
 
   public boolean isOnSpeed(double speedTolerance){
     var vel_delta = this.speedSetpoint - getShooterMotorVelocity();
-    SmartDashboard.putNumber("vel_delta", vel_delta);
-    // return Math.abs(this.speedSetpoint - getShooterMotorVelocity()) < speedTolerance;
     return Math.abs(vel_delta) < speedTolerance;
   }
 
@@ -81,8 +88,33 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     speedReadyAverager.update(getRawIsOnSpeed());
 
+    if (!this.isSparkMaxControl){
+      if (isSpeedPursuit){
+        var F = ShooterConstants.MOTOR_KV * speedSetpoint;
+  
+        var error = speedSetpoint - getShooterMotorVelocity();
+  
+        var P = RobotUtils.clip(ShooterConstants.SPEED_KP * error, ShooterConstants.kPEffectiveness);
+  
+        var I = RobotUtils.clip(ShooterConstants.SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
+  
+        var power = F + P + I;
+  
+        setAbsoluteShooterMotorPower(power);
+        
+        if (Math.abs(error) < ShooterConstants.I_RANGE){
+          errorSum += error;
+        }
+  
+      } else {
+        setAbsoluteShooterMotorPower(0);
+  
+        errorSum = 0;
+      }
+    }
+
     if (isTelemetry){
-      SmartDashboard.putNumber("DEBUG_Set_Speed", this.speedSetpoint);
+      SmartDashboard.putNumber("DEBUG_speedSpetpoint", this.speedSetpoint);
       SmartDashboard.putNumber("DEBUG_SPEED", getShooterMotorVelocity());
       SmartDashboard.putBoolean("DEBUG_isOnSpeed", getRawIsOnSpeed());
     }
@@ -97,13 +129,20 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setVelocityPID(double target){
-    shooterMotor.getPIDController().setReference(target / ShooterConstants.SPEED_TO_RPM_CONVERSION, ControlType.kVelocity);
-    this.speedSetpoint = target;
+    if (isSparkMaxControl){
+      shooterMotor.getPIDController().setReference(target / ShooterConstants.SPEED_TO_RPM_CONVERSION, ControlType.kVelocity);
+      this.speedSetpoint = target;
+    } else {
+      setIsSpeedPursuit(true);
+      speedSetpoint = target;
+    }
   }
 
   public void releaseVelocityPID(){
     setIsSpeedPursuit(false);
-    setAbsoluteShooterMotorPower(0);
+    if (isSparkMaxControl){
+      setAbsoluteShooterMotorPower(0);
+    }
   }
 
   

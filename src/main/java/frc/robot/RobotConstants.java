@@ -62,11 +62,11 @@ public class RobotConstants{
         public static final double SPEED_KD = 0.0;
         public static final double SPEED_KFF = 0.11;
 
-        // public static final double kPEffectiveness = 0.175;
+        public static final double I_RANGE = 500;
+        public static final double kPEffectiveness = 0.175;
+        public static final double kIEffectiveness = 0.12;
         
         public static final int SPEED_BUCKET_SIZE = 20;
-
-        // public static final double LOWER_SPEED = 10000;
     }
 
     public static class CollectorConstants{

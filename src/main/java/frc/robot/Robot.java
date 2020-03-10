@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
     m_climber = new Climber();
     m_collector = new Collector();
     // m_limelight = new Limelight();
-    m_shooter = new Shooter(true);
+    m_shooter = new Shooter(true, false);
     m_transporter = new Transporter();
     m_leds = new LEDs();
     
