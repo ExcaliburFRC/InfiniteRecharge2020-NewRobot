@@ -105,7 +105,7 @@ public class Shooter extends SubsystemBase {
     if (isSpeedPursuit){
       var F = (ShooterConstants.MOTOR_KV * speedSetpoint)/12.0;
       var error = speedSetpoint - getShooterMotorVelocity();
-      var P = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KP * error, ShooterConstants.kPEffectiveness);
+      var P = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KP * error, Math.abs(error) > ShooterConstants.fineErrorSize ? ShooterConstants.roughKPEffectiveness : ShooterConstants.kPEffectiveness);
       var I = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
       var power = F + P + I;
   
