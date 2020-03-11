@@ -94,9 +94,9 @@ public class Shooter extends SubsystemBase {
   
         var error = speedSetpoint - getShooterMotorVelocity();
   
-        var P = RobotUtils.clip(ShooterConstants.SPEED_KP * error, ShooterConstants.kPEffectiveness);
+        var P = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KP * error, ShooterConstants.kPEffectiveness);
   
-        var I = RobotUtils.clip(ShooterConstants.SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
+        var I = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
   
         var power = F + P + I;
   

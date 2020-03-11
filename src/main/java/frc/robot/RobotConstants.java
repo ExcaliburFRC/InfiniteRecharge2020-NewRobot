@@ -67,6 +67,9 @@ public class RobotConstants{
         public static final double kIEffectiveness = 0.12;
         
         public static final int SPEED_BUCKET_SIZE = 20;
+
+        public static final double NOSP_SPEED_KP = 0.002;//CANNOT BE MORE THAN 0.002
+        public static final double NOSP_SPEED_KI = 0.0;
     }
 
     public static class CollectorConstants{
