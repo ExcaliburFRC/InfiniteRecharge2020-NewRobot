@@ -31,8 +31,8 @@ public class DebugShooter extends CommandBase {
   public void execute() {
     double shootSpeed = OI.armJoystick.getRawAxis(1);
     
-    if (OI.armJoystick.getRawAxis(3) > 2){ //this is always false - for debugging purposes
-      Robot.m_shooter.setVelocityPID(4500);
+    if (OI.armJoystick.getRawAxis(3) > 0){ //this is always false - for debugging purposes
+      Robot.m_shooter.setVelocityPID(-3000);
     } else {
       Robot.m_shooter.releaseVelocityPID();
       Robot.m_shooter.setAbsoluteShooterMotorPower(shootSpeed);

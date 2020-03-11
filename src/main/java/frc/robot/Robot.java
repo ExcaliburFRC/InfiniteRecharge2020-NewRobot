@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.collector.CollectorDrive;
+import frc.robot.commands.debug.DebugShooter;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.transporter.TransporterDrive;
 import frc.robot.subsystems.*;
@@ -80,23 +81,23 @@ public class Robot extends TimedRobot {
   }
   
   private void initDefaultCommands(){
-    m_chassi.setDefaultCommand(new RunCommand(()->{
-     m_chassi.arcadeDrive(-1*OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
-    }, m_chassi));
+    // m_chassi.setDefaultCommand(new RunCommand(()->{
+    //  m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
+    // }, m_chassi));
 
     m_leds.setDefaultCommand(new DefaultLED());
 
-    m_collector.setDefaultCommand(new CollectorDrive());
+    // m_collector.setDefaultCommand(new CollectorDrive());
 
-    m_transporter.setDefaultCommand(new TransporterDrive());
+    // m_transporter.setDefaultCommand(new TransporterDrive());
 
-    // m_shooter.setDefaultCommand(new ShooterSetup(()->4500));
+    m_shooter.setDefaultCommand(new DebugShooter());
 
     // m_climber.setDefaultCommand(new ClimberDrive());
   }
 
   private void initSystemsStates(){
-    CommandScheduler.getInstance().cancelAll();
+    // CommandScheduler.getInstance().cancelAll();
     m_chassi.setCompressorMode(false);
 
     m_shooter.releaseVelocityPID();
@@ -104,26 +105,6 @@ public class Robot extends TimedRobot {
     m_collector.setLifterPistonPosition(false);
     
     m_climber.setHangerState(false);
-
-    m_leds.setMode(LEDMode.RAINBOW);
-  }
-  
-  @Override
-  public void testPeriodic() {
-    
-
-    testChassi();
-  }
-  void testChassi(){
-    if(OI.armJoystick.getRawButton(3)){
-      Robot.m_chassi.test(1);
-    }else if(OI.armJoystick.getRawButton(4)){
-      Robot.m_chassi.test(2);
-    }else if(OI.armJoystick.getRawButton(5)){
-      Robot.m_chassi.test(3);
-    }else if(OI.armJoystick.getRawButton(6)){
-      Robot.m_chassi.test(4);
-      }else  Robot.m_chassi.test(0);
   }
 
   void testClimb(){

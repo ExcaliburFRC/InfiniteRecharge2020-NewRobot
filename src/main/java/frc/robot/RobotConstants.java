@@ -53,9 +53,9 @@ public class RobotConstants{
 
         public static final double SPEED_TOLERANCE = 100.0; //used to be 500 , 250
 
-        public static final double TOP_SPEED = 5100.0;  // What Nir measured.
+        public static final double TOP_SPEED = 5300.0;  
         public static final double SPEED_TO_RPM_CONVERSION = 2585 / 50; // In order to compare set point speed to encoder RPM, we need this conversion. 
-        public static final double VOLTAGE_AT_TOP_SPEED = 11.7;  // what Nir measured. 
+        public static final double VOLTAGE_AT_TOP_SPEED = 11.7;   
         public static final double MOTOR_KV = VOLTAGE_AT_TOP_SPEED/TOP_SPEED;
         public static final double SPEED_KP = 0.002;//CANNOT BE MORE THAN 0.002
         public static final double SPEED_KI = 0.0;
@@ -63,12 +63,12 @@ public class RobotConstants{
         public static final double SPEED_KFF = 0.11;
 
         public static final double I_RANGE = 500;
-        public static final double kPEffectiveness = 0.175;
+        public static final double kPEffectiveness = 0.135;
         public static final double kIEffectiveness = 0.12;
         
         public static final int SPEED_BUCKET_SIZE = 20;
 
-        public static final double NOSP_SPEED_KP = 0.002;//CANNOT BE MORE THAN 0.002
+        public static final double NOSP_SPEED_KP = 0.000175;//CANNOT BE MORE THAN 0.002
         public static final double NOSP_SPEED_KI = 0.0;
     }
 

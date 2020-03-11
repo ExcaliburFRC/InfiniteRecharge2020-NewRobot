@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants.ShooterConstants;
@@ -31,15 +32,17 @@ public class Shooter extends SubsystemBase {
   double speedSetpoint;
   BooleanAverager speedReadyAverager;
   double errorSum;
-  boolean isTelemetry, isSparkMaxControl, isInSpeedPursuit;
+  boolean isTelemetry, isSparkMaxControl;
 
   public Shooter(boolean isTelemetry, boolean isSparkMaxControl){
     shooterMotor = new CANSparkMax(RobotMap.SHOOTER_MOTOR_PORT, MotorType.kBrushless);
     shooterMotor.setIdleMode(IdleMode.kCoast);
+    shooterMotor.setInverted(true);
 
     if (isSparkMaxControl){
       initPID(shooterMotor.getPIDController());
     }
+
     isSpeedPursuit = false;
     speedSetpoint = 0;
     
@@ -49,7 +52,6 @@ public class Shooter extends SubsystemBase {
     this.isSparkMaxControl = isSparkMaxControl;
   }
   
-
   public Shooter() {
     this(false, false);
   }
@@ -64,7 +66,6 @@ public class Shooter extends SubsystemBase {
     } else {
       shooterMotor.set(p);
     }
-    
   }
   
   public double getShooterMotorVelocity(){
@@ -81,6 +82,7 @@ public class Shooter extends SubsystemBase {
 
   public boolean isOnSpeed(double speedTolerance){
     var vel_delta = this.speedSetpoint - getShooterMotorVelocity();
+    // SmartDashboard.putNumber("vel_delta", vel_delta);
     return Math.abs(vel_delta) < speedTolerance;
   }
 
@@ -89,34 +91,32 @@ public class Shooter extends SubsystemBase {
     speedReadyAverager.update(getRawIsOnSpeed());
 
     if (!this.isSparkMaxControl){
-      if (isSpeedPursuit){
-        var F = ShooterConstants.MOTOR_KV * speedSetpoint;
-  
-        var error = speedSetpoint - getShooterMotorVelocity();
-  
-        var P = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KP * error, ShooterConstants.kPEffectiveness);
-  
-        var I = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
-  
-        var power = F + P + I;
-  
-        setAbsoluteShooterMotorPower(power);
-        
-        if (Math.abs(error) < ShooterConstants.I_RANGE){
-          errorSum += error;
-        }
-  
-      } else {
-        setAbsoluteShooterMotorPower(0);
-  
-        errorSum = 0;
-      }
+      externalPID();
     }
 
     if (isTelemetry){
       SmartDashboard.putNumber("DEBUG_speedSpetpoint", this.speedSetpoint);
       SmartDashboard.putNumber("DEBUG_SPEED", getShooterMotorVelocity());
       SmartDashboard.putBoolean("DEBUG_isOnSpeed", getRawIsOnSpeed());
+    }
+  }
+
+  private void externalPID(){
+    if (isSpeedPursuit){
+      var F = (ShooterConstants.MOTOR_KV * speedSetpoint)/12.0;
+      var error = speedSetpoint - getShooterMotorVelocity();
+      var P = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KP * error, ShooterConstants.kPEffectiveness);
+      var I = RobotUtils.clip(ShooterConstants.NOSP_SPEED_KI * errorSum, ShooterConstants.kIEffectiveness);
+      var power = F + P + I;
+  
+      setAbsoluteShooterMotorPower(power);
+        
+      if (Math.abs(error) < ShooterConstants.I_RANGE){
+        errorSum += error;
+      }
+    } else {
+      setAbsoluteShooterMotorPower(0);
+      errorSum = 0;
     }
   }
 
@@ -152,15 +152,17 @@ public class Shooter extends SubsystemBase {
       controller.setP(ShooterConstants.SPEED_KP),
       controller.setI(ShooterConstants.SPEED_KI),
       controller.setD(ShooterConstants.SPEED_KD),
-      controller.setOutputRange(0,0.8),
+      controller.setOutputRange(0,1),
       controller.setFF(ShooterConstants.SPEED_KFF)
       )
     .filter(err -> err != CANError.kOk).map(CANError::toString).collect(Collectors.toSet());
     
     if(!errorSet.isEmpty()){
-      System.err.println("SparkMax PID not initialized correctly, errors:");
-      errorSet.forEach(System.err::println);
-    }else System.err.println("SparkMax PID initialized correctly!");
+      StringBuilder sb = new StringBuilder();
+      sb.append("SparkMax PID not initialized correctly, errors:\n");
+      errorSet.forEach(s -> sb.append(s).append("\n"));
+      DriverStation.reportError(sb.toString(), false);
+    }else DriverStation.reportWarning("SparkMax PID initialized correctly!", false);
 
   }
 }
