@@ -21,8 +21,10 @@ public class Collector extends SubsystemBase {
 
   public Collector() {
     rollerMotor = new VictorSPX(RobotMap.ROLLER_MOTOR_PORT);
-    lifterPiston = new DoubleSolenoid(RobotMap.LIFTER_PORTS[0], RobotMap.LIFTER_PORTS[1]);
+    rollerMotor.setInverted(false);
+    lifterPiston = new DoubleSolenoid(RobotMap.LIFTER_PORT1, RobotMap.LIFTER_PORT2);
   }
+
 
   public void setRollerMotorPower(double p){
     rollerMotor.set(ControlMode.PercentOutput, p);

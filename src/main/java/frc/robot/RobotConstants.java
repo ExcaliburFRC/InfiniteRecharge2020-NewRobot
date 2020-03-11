@@ -23,8 +23,6 @@ public class RobotConstants{
         
         public static final double DISTANCE_KP = 0.3;
         public static final double DISTANCE_TOLERANCE = 0.5;
-    
-
     }
 
     public static class ClimbConstants{
@@ -52,25 +50,40 @@ public class RobotConstants{
     }
     
     public static class ShooterConstants{
-        public static final double SPEED_TOLERANCE = 500.0; //used to be 250
 
-        public static final double TOP_SPEED = 27500.0; 
-        public static final double VOLTAGE_AT_TOP_SPEED = 11.4; 
+        public static final double SPEED_TOLERANCE = 150.0; //used to be 500 , 250
+
+        public static final double TOP_SPEED = 5300.0;  
+        public static final double SPEED_TO_RPM_CONVERSION = 2585 / 50; // In order to compare set point speed to encoder RPM, we need this conversion. 
+        public static final double VOLTAGE_AT_TOP_SPEED = 11.7;   
         public static final double MOTOR_KV = VOLTAGE_AT_TOP_SPEED/TOP_SPEED;
-        public static final double SPEED_KP = 0.000135;
-        public static final double SPEED_KI = 0.0000001;
-        public static final double kPEffectiveness = 0.175;
+        public static final double SPEED_KP = 0.002;//CANNOT BE MORE THAN 0.002
+        public static final double SPEED_KI = 0.0;
+        public static final double SPEED_KD = 0.0;
+        public static final double SPEED_KFF = 0.11;
+
+        public static final double I_RANGE = 500;
+        public static final double kPEffectiveness = 0.135;
+        public static final double roughKPEffectiveness = 0.3;
+        public static final double fineErrorSize = 750;
+        public static final double kIEffectiveness = 0.12;
         
         public static final int SPEED_BUCKET_SIZE = 20;
 
-        public static final double LOWER_SPEED = 10000;
+        public static final double NOSP_SPEED_KP = 0.000175;//CANNOT BE MORE THAN 0.002
+        public static final double NOSP_SPEED_KI = 0.0;
     }
 
+    public static class CollectorConstants{
+        public static final double ROLLER_SPEED = 0.7;
+    }
     public static class TransporterConstants{
         public static final double NO_RETURN_TIME = 500;
-        public static final double AUTO_SHOOT_LOAD_SPEED = 0.6;
-        public static final double AUTO_SHOOT_FLICKER_SPEED = 0.6;
+        public static final double AUTO_SHOOT_LOAD_SPEED = 0.8;
+        public static final double AUTO_SHOOT_FLICKER_SPEED = 0.7;
 
+        public static final double MANUAL_SHOOT_LOAD_SPEED = 0.8;
+        public static final double MANUAL_SHOOT_FLICKER_SPEED = 0.7;
     }
 
     public static class MotionProfilingConstants{

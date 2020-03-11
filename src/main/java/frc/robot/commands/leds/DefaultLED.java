@@ -25,7 +25,9 @@ public class DefaultLED extends CommandBase {
 
   @Override
   public void execute() {
-    if (Robot.m_shooter.isSpeedPursuit()){
+    if (Robot.m_climber.getIsOn()) {
+      color = LEDMode.YELLOW;
+    } else if (Robot.m_shooter.isSpeedPursuit()){
       color = Robot.m_shooter.isOnSpeed() ? LEDMode.GREEN : LEDMode.RED;
     } else {
       color = LEDMode.BLUE;

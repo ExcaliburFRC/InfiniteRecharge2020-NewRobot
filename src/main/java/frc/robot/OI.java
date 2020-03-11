@@ -39,10 +39,10 @@ public class OI{
             Robot.m_chassi.setCompressorMode(false);
         });
 
-        //Rumble
-        new JoystickButton(driverJoystick, 1).whenPressed(()->{
-            OI.rumbleFor(3000);
-        });
+        // //Rumble
+        // new JoystickButton(driverJoystick, 1).whenPressed(()->{
+        //     OI.rumbleFor(3000);
+        // });
 
         initSmartDashboard();
     }

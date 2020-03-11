@@ -3,21 +3,25 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
+import frc.robot.util.BallDetector;
 import frc.robot.util.BooleanAverager;
+import frc.robot.util.ColorSensorBallDetector;
 
 public class Transporter extends SubsystemBase {
     VictorSPX flicker, loading;
     boolean isAutoShoot;
-    DigitalInput shooterSwitch;
+    BallDetector shooterSwitch;
     BooleanAverager shooterSensorAverager;
 
     public Transporter(){
         loading = new VictorSPX(RobotMap.LOADING_MOTOR_PORT);
+        loading.setInverted(true);
         flicker = new VictorSPX(RobotMap.FLICKER_MOTOR_PORT);
-        shooterSwitch = new DigitalInput(RobotMap.SHOOTER_MICRO_SWITCH);
+        flicker.setInverted(false);
+        shooterSwitch = new ColorSensorBallDetector(Port.kOnboard, 1000);
         isAutoShoot = false;
         shooterSensorAverager = new BooleanAverager(10);
     }
@@ -39,7 +43,7 @@ public class Transporter extends SubsystemBase {
     }
 
     public boolean getRawShooterSensor(){
-        return !shooterSwitch.get();
+        return shooterSwitch.isBallDetected();
     }
 
     public boolean isBallInShooter(){
