@@ -15,7 +15,6 @@ import frc.robot.commands.debug.DebugShooter;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.transporter.TransporterDrive;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.LEDs.LEDMode;
 
 public class Robot extends TimedRobot {
 
@@ -81,15 +80,15 @@ public class Robot extends TimedRobot {
   }
   
   private void initDefaultCommands(){
-    // m_chassi.setDefaultCommand(new RunCommand(()->{
-    //  m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
-    // }, m_chassi));
+    m_chassi.setDefaultCommand(new RunCommand(()->{
+     m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
+    }, m_chassi));
 
     m_leds.setDefaultCommand(new DefaultLED());
 
-    // m_collector.setDefaultCommand(new CollectorDrive());
+    m_collector.setDefaultCommand(new CollectorDrive());
 
-    // m_transporter.setDefaultCommand(new TransporterDrive());
+    m_transporter.setDefaultCommand(new TransporterDrive());
 
     m_shooter.setDefaultCommand(new DebugShooter());
 
