@@ -34,7 +34,7 @@ public class TransporterDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    var isOkToShoot = (Robot.m_transporter.getIsAutoShoot() || OI.armJoystick.getRawButton(1)) && Robot.m_shooter.isOnSpeed();
+    var isOkToShoot = (false/*Robot.m_transporter.getIsAutoShoot()*/ || OI.armJoystick.getRawButton(1));// && Robot.m_shooter.isOnSpeed();
     // var isInNoReturnMode = (System.currentTimeMillis() - timeSinceTop) < TransporterConstants.NO_RETURN_TIME;
     
     // If you really want the transporter to work, regardless of the shooter speed readiness state

@@ -29,12 +29,12 @@ public class DebugShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double shootSpeed = 0;//OI.armJoystick.getRawAxis(1);
+    double shootSpeed = OI.armJoystick.getRawAxis(1);
     // double shootSpeed = SmartDashboard.getNumber("target", 0);
 
     
     if (OI.armJoystick.getRawAxis(3) > 0){ //this is always false - for debugging purposes
-      Robot.m_shooter.setVelocityPID(-Math.abs(SmartDashboard.getNumber("target", 0)));
+      Robot.m_shooter.setVelocityPID(0/*-Math.abs(SmartDashboard.getNumber("target", 0))*/);
     } else {
       Robot.m_shooter.releaseVelocityPID();
       Robot.m_shooter.setAbsoluteShooterMotorPower(shootSpeed);
