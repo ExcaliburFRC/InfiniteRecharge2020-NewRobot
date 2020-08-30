@@ -16,11 +16,7 @@ import frc.robot.commands.debug.DebugShooter;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.transporter.TransporterDrive;
 import frc.robot.subsystems.*;
-<<<<<<< HEAD
-=======
-import frc.robot.subsystems.LEDs.LEDMode;
 import frc.robot.util.CalculateVisionValues;
->>>>>>> abandoned worktree
 
 public class Robot extends TimedRobot {
 
@@ -85,11 +81,7 @@ public class Robot extends TimedRobot {
   
   private void initDefaultCommands(){
     m_chassi.setDefaultCommand(new RunCommand(()->{
-<<<<<<< HEAD
-     m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
-=======
      m_chassi.arcadeDrive(-0.8*OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
->>>>>>> abandoned worktree
     }, m_chassi));
 
     m_leds.setDefaultCommand(new DefaultLED());
