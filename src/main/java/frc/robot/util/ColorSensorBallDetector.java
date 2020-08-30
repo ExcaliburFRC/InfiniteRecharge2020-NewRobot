@@ -25,7 +25,7 @@ public class ColorSensorBallDetector implements BallDetector{
 
     @Override
     public boolean isBallDetected() {
-        return getDistance() < tolerance;
+        return getDistance() > tolerance;
     }
     
     public double getDistance(){

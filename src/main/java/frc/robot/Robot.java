@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.collector.CollectorDrive;
@@ -15,6 +16,11 @@ import frc.robot.commands.debug.DebugShooter;
 import frc.robot.commands.leds.DefaultLED;
 import frc.robot.commands.transporter.TransporterDrive;
 import frc.robot.subsystems.*;
+<<<<<<< HEAD
+=======
+import frc.robot.subsystems.LEDs.LEDMode;
+import frc.robot.util.CalculateVisionValues;
+>>>>>>> abandoned worktree
 
 public class Robot extends TimedRobot {
 
@@ -25,7 +31,6 @@ public class Robot extends TimedRobot {
   public static Shooter m_shooter;
   public static Transporter m_transporter;
   public static LEDs m_leds;
-  private static boolean isEnabled;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -35,7 +40,7 @@ public class Robot extends TimedRobot {
     m_chassi = new Chassi();
     m_climber = new Climber();
     m_collector = new Collector();
-    // m_limelight = new Limelight();
+    m_limelight = new Limelight();
     m_shooter = new Shooter(true, false);
     m_transporter = new Transporter();
     m_leds = new LEDs();
@@ -44,13 +49,12 @@ public class Robot extends TimedRobot {
     initDefaultCommands();
     initSystemsStates();
   }
-  public static boolean enabled() {
-    return isEnabled;
-  }
 
   @Override
   public void robotPeriodic() {
-    isEnabled = isEnabled();
+    var dist = CalculateVisionValues.calculateDistanceShooter(m_limelight.getTy());
+    SmartDashboard.putNumber("suggested shoot speed", CalculateVisionValues.calculateCrappyBallShootingSpeed(dist));
+    SmartDashboard.putNumber("LamLam Dist", dist);
   }
 
   @Override
@@ -81,7 +85,11 @@ public class Robot extends TimedRobot {
   
   private void initDefaultCommands(){
     m_chassi.setDefaultCommand(new RunCommand(()->{
+<<<<<<< HEAD
      m_chassi.arcadeDrive(-OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
+=======
+     m_chassi.arcadeDrive(-0.8*OI.driverJoystick.getRawAxis(1), OI.driverJoystick.getRawAxis(2));
+>>>>>>> abandoned worktree
     }, m_chassi));
 
     m_leds.setDefaultCommand(new DefaultLED());
@@ -105,6 +113,22 @@ public class Robot extends TimedRobot {
     
     m_climber.setHangerState(false);
   }
+
+  @Override
+  public void testInit() {
+    SmartDashboard.putNumber("target", 0);
+    initSystemsStates();
+    initDefaultCommands();
+  }
+
+  @Override
+  public void testPeriodic() {
+    CommandScheduler.getInstance().run();
+    if(OI.driverJoystick.getRawButton(2)){
+      m_shooter.setVelocityPID(SmartDashboard.getNumber("target", 0));
+    }
+  }
+
 
   void testClimb(){
     if(OI.armJoystick.getRawButton(10)){

@@ -51,7 +51,7 @@ public class RobotConstants{
     
     public static class ShooterConstants{
 
-        public static final double SPEED_TOLERANCE = 150.0; //used to be 500 , 250
+        public static final double SPEED_TOLERANCE = 200.0; //used to be 500 , 250
 
         public static final double TOP_SPEED = 5300.0;  
         public static final double SPEED_TO_RPM_CONVERSION = 2585 / 50; // In order to compare set point speed to encoder RPM, we need this conversion. 
@@ -79,11 +79,11 @@ public class RobotConstants{
     }
     public static class TransporterConstants{
         public static final double NO_RETURN_TIME = 500;
-        public static final double AUTO_SHOOT_LOAD_SPEED = 0.8;
-        public static final double AUTO_SHOOT_FLICKER_SPEED = 0.7;
+        public static final double AUTO_SHOOT_LOAD_SPEED = 0.85;
+        public static final double AUTO_SHOOT_FLICKER_SPEED = 0.6;
 
-        public static final double MANUAL_SHOOT_LOAD_SPEED = 0.8;
-        public static final double MANUAL_SHOOT_FLICKER_SPEED = 0.7;
+        public static final double MANUAL_SHOOT_LOAD_SPEED = 0.275;
+        public static final double MANUAL_SHOOT_FLICKER_SPEED = 0.25;
     }
 
     public static class MotionProfilingConstants{

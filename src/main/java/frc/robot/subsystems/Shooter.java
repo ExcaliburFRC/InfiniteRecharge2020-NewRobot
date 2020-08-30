@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
   double speedSetpoint;
   BooleanAverager speedReadyAverager;
   double errorSum;
-  boolean isTelemetry, isSparkMaxControl;
+  boolean isTelemetry, isSparkMaxControl, lastIsPersuit;
 
   public Shooter(boolean isTelemetry, boolean isSparkMaxControl){
     shooterMotor = new CANSparkMax(RobotMap.SHOOTER_MOTOR_PORT, MotorType.kBrushless);
@@ -95,10 +95,11 @@ public class Shooter extends SubsystemBase {
     }
 
     if (isTelemetry){
-      SmartDashboard.putNumber("DEBUG_speedSpetpoint", this.speedSetpoint);
+      SmartDashboard.putNumber("DEBUG_ERROR", speedSetpoint - getShooterMotorVelocity());
       SmartDashboard.putNumber("DEBUG_SPEED", getShooterMotorVelocity());
-      SmartDashboard.putBoolean("DEBUG_isOnSpeed", getRawIsOnSpeed());
+      SmartDashboard.putBoolean("DEBUG_isOnSpeed", isOnSpeed());
     }
+    lastIsPersuit = isSpeedPursuit;
   }
 
   private void externalPID(){
@@ -115,7 +116,9 @@ public class Shooter extends SubsystemBase {
         errorSum += error;
       }
     } else {
-      setAbsoluteShooterMotorPower(0);
+      if(lastIsPersuit){
+        setAbsoluteShooterMotorPower(0.3);
+      }else setAbsoluteShooterMotorPower(0);
       errorSum = 0;
     }
   }

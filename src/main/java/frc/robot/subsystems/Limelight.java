@@ -53,7 +53,11 @@ public class Limelight extends SubsystemBase {
     } 
 
 
-    public Limelight(){    }
+    public Limelight(){ 
+        this.setLEDMode(LedModes.ON);
+        this.setCamMode(CamModes.VISION);
+        this.setPipeline(0);
+    }
 
     public double getVar(String var){
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry(var).getDouble(0);

@@ -36,7 +36,6 @@ public class TransporterDrive extends CommandBase {
   public void execute() {
     var isOkToShoot = (Robot.m_transporter.getIsAutoShoot() || OI.armJoystick.getRawButton(1)) && Robot.m_shooter.isOnSpeed();
     // var isInNoReturnMode = (System.currentTimeMillis() - timeSinceTop) < TransporterConstants.NO_RETURN_TIME;
-    SmartDashboard.putBoolean("transport_switch", Robot.m_transporter.getRawShooterSensor());
     
     // If you really want the transporter to work, regardless of the shooter speed readiness state
     // just uncomment this line:
@@ -46,12 +45,12 @@ public class TransporterDrive extends CommandBase {
     if (OI.armJoystick.getRawButton(OI.collectorTakeInBallButton) && !Robot.m_transporter.getRawShooterSensor()){ //get the raw shooter sensor to get quicker feedback
       Robot.m_transporter.setFlickerMotorSpeed(TransporterConstants.MANUAL_SHOOT_FLICKER_SPEED);
       Robot.m_transporter.setLoadingMotorSpeed(TransporterConstants.MANUAL_SHOOT_LOAD_SPEED);
-    } else if (isOkToShoot){
+    } else if (isOkToShoot||OI.armJoystick.getRawButton(11)){
       Robot.m_transporter.setFlickerMotorSpeed(TransporterConstants.AUTO_SHOOT_FLICKER_SPEED);
       Robot.m_transporter.setLoadingMotorSpeed(TransporterConstants.AUTO_SHOOT_LOAD_SPEED);
-    } else if  (OI.armJoystick.getRawButton(8)) {
-      Robot.m_transporter.setFlickerMotorSpeed(-TransporterConstants.MANUAL_SHOOT_FLICKER_SPEED);
-      Robot.m_transporter.setLoadingMotorSpeed(-TransporterConstants.MANUAL_SHOOT_LOAD_SPEED);
+    } else if  (OI.armJoystick.getRawButton(5)) {
+      Robot.m_transporter.setFlickerMotorSpeed(TransporterConstants.AUTO_SHOOT_FLICKER_SPEED);
+      Robot.m_transporter.setLoadingMotorSpeed(TransporterConstants.AUTO_SHOOT_LOAD_SPEED);
     } else {
       Robot.m_transporter.setFlickerMotorSpeed(0);
       Robot.m_transporter.setLoadingMotorSpeed(0);
@@ -70,6 +69,7 @@ public class TransporterDrive extends CommandBase {
   }
 
   // Returns true when the command should end.
+
   @Override
   public boolean isFinished() {
     return false;

@@ -57,6 +57,7 @@ public class Chassi extends SubsystemBase {
     rightMotor = new SpeedControllerGroup(RBM, RFM);
 
     differentialDrive = new DifferentialDrive(leftMotor, rightMotor);
+    differentialDrive.setSafetyEnabled(false);
 
     leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_P[0], RobotMap.LEFT_ENCODER_P[1], RobotConstants.DriveConstants.isLeftEncoderReversed);
     leftEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_PULSE);

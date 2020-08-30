@@ -1,14 +1,14 @@
 package frc.robot.util;
 
 import frc.robot.RobotConstants;
-
+import static java.lang.Math.pow;
 public class CalculateVisionValues{ 
     public static double calculateDistanceFeeder(double ta){
         return ta*1; //TODO needs to be tuned
     }
 
     public static double calculateDistanceShooter(double ty){
-        return 0.0293 * ty * ty - 1.29 * ty + 17.9;
+        return 1.49e-3 * ty * ty - 0.11 * ty + 3.22;
     }
 
     public static double getOptimalShooterAngle(double dist){// gets the optimal shooter angle
@@ -20,6 +20,11 @@ public class CalculateVisionValues{
         // return 15000;
         // return 91.3 * dist * dist - 704 * dist + 13275;
         return 91.3 * dist * dist - 704 * dist + 13375;
+    }
+
+    public static double calculateCrappyBallShootingSpeed(double dist) {
+        return 1918 * pow(dist, 6) - 34350 * pow(dist, 5) + 255867 * pow(dist, 4) - 1.01e6 * pow(dist, 3)
+        + 2.24e6 * pow(dist, 2) - 2.63e6 * dist + 1.28e6;
     }
 
     /*
